@@ -1,6 +1,7 @@
-const text = 'some_underscore AND_some   stran_GE     defini_tions';
+const test = 'some_underscore AND_some   stran_GE     defini_tions';
 
-const underscoreToCamel = function () {
+//1st option
+const underscoreToCamel1 = function (text) {
   const lowText = text.toLowerCase().split(' '); //divides into words
 
   for (const [i, textArray] of lowText.entries()) {
@@ -10,3 +11,48 @@ const underscoreToCamel = function () {
     console.log(`${camelCase.padEnd(20)}${'!'.repeat(i) + 1}`); //logs some extra ! as fireworks ;)
   }
 };
+console.log(underscoreToCamel1(test));
+
+//2nd option
+const underscoreToCamel2 = text =>
+  text
+    .toLowerCase()
+    .split(' ')
+    .filter(v => v !== '') //to avoid empty strings appearing
+    .map(w =>
+      w
+        .split('_')
+        .reduce(
+          (acc, v, i) => acc + (i === 0 ? v : v[0].toUpperCase() + v.slice(1)),
+          ''
+        )
+    ) //whole map section divides underscore notation, throws out the '_' and makes the 1st letter of words the Upper Case (but not the 1st word)
+    .join(' '); //return a string
+
+console.log(underscoreToCamel2(test));
+
+//3rd option
+//divides longer strings into phrases and cuts out empty stings
+const separateStrings = text =>
+  text
+    .toLowerCase()
+    .split(' ')
+    .filter(w => w !== '');
+
+//converts underscore to camel notation
+const underscoreToCamel3 = function (fn, str) {
+  const camel = fn(str)
+    .map(w =>
+      w
+        .split('_')
+        .reduce(
+          (acc, v, i) => acc + (i === 0 ? v : v[0].toUpperCase() + v.slice(1)),
+          ''
+        )
+    )
+    .join(' ');
+  return console.log(camel);
+};
+underscoreToCamel3(separateStrings, test);
+
+
